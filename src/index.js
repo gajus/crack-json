@@ -1,3 +1,5 @@
 // @flow
 
-export {default as extractJson} from './extractJson';
+export {
+  extractJson
+} from './utilities';
