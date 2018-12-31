@@ -9,9 +9,6 @@
       "@babel/register"
     ]
   },
-  "dependencies": {
-    "save-dev": "^2.0.0"
-  },
   "description": "Extracts all JSON objects from an arbitrary text document.",
   "devDependencies": {
     "@babel/cli": "^7.1.2",
