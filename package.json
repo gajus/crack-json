@@ -1,0 +1,71 @@
+{
+  "author": {
+    "email": "gajus@gajus.com",
+    "name": "Gajus Kuizinas",
+    "url": "http://gajus.com"
+  },
+  "ava": {
+    "require": [
+      "@babel/register"
+    ]
+  },
+  "dependencies": {
+    "save-dev": "^2.0.0"
+  },
+  "description": "Extracts all JSON objects from an arbitrary text document.",
+  "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/plugin-transform-flow-strip-types": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/register": "^7.0.0",
+    "ava": "^1.0.0-rc.1",
+    "babel-plugin-istanbul": "^5.1.0",
+    "babel-plugin-transform-export-default-name": "^2.0.4",
+    "coveralls": "^3.0.2",
+    "eslint": "^5.8.0",
+    "eslint-config-canonical": "^13.0.0",
+    "flow-bin": "^0.85.0",
+    "flow-copy-source": "^2.0.2",
+    "husky": "^1.1.2",
+    "nyc": "^13.1.0",
+    "semantic-release": "^15.10.6"
+  },
+  "engines": {
+    "node": ">=8.0"
+  },
+  "keywords": [
+    "json",
+    "extract",
+    "parse"
+  ],
+  "license": "BSD-3-Clause",
+  "main": "./dist/index.js",
+  "name": "crack-json",
+  "nyc": {
+    "all": true,
+    "include": [
+      "src/**/*.js"
+    ],
+    "instrument": false,
+    "reporter": [
+      "html",
+      "text-summary"
+    ],
+    "require": [
+      "@babel/register"
+    ],
+    "silent": true,
+    "sourceMap": false
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gajus/crack-json"
+  },
+  "scripts": {
+    "build": "rm -fr ./dist && NODE_ENV=production babel ./src --out-dir ./dist --copy-files --source-maps && flow-copy-source src dist",
+    "lint": "eslint ./src ./test && flow",
+    "test": "NODE_ENV=test nyc ava --verbose --serial"
+  },
+  "version": "1.0.0"
+}
