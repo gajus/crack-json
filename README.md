@@ -8,6 +8,42 @@
 
 Extracts all JSON objects from an arbitrary text document.
 
+* [Use case](#use-case)
+* [Implementation](#implementation)
+* [API](#api)
+  * [`extractJson` API](#extractjson-api)
+* [Usage](#usage)
+
+## Use case
+
+The primary use-case is extracting structured data from non-structured documents, e.g. when scraping websites, it is common that HTML embeds JSON or JSON-like data structures.
+
+```html
+<script>
+$(document).on('BookingApp:SeatingPlan:Ready', () => {
+  $(document).trigger('BookingApp:StartSeatingPlanOnly', {
+    "sessionId": "438a8373-5fab-4d36-ac92-053ae2d04e9c"
+  });
+});
+</script>
+
+```
+
+The way that the `crack-json` is intended to be used is that the scraper must narrow down the document to the HTML containing the subject JSON data and then `crack-json` is used to extract all JSON-like objects. If in the above example we are interested in extracting the `sessionId`, then it would be sufficient to get `innerHTML` of the `script` tag, use `crack-json` to extract all JSON-like objects, and search for the matching object, e.g.
+
+```js
+const session = extractJson(document.querySelector('script').innerHTML)
+  .find((maybeTargetSubject) => {
+    return maybeTargetSubject.sessionId;
+  });
+
+session;
+// {
+//   "sessionId": "438a8373-5fab-4d36-ac92-053ae2d04e9c"
+// }
+
+```
+
 ## Implementation
 
 `crack-json` iterates through the input text by searching for characters that indicate the start of a JSON object, array or text entity, and attempts to match the closing character and parse the resulting string. `crack-json` iterates through document this way until it finds all text entities that can be parsed as JSON.
