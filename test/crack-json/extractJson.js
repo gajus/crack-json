@@ -16,6 +16,10 @@ test('extracts JSON strings', (t) => {
   t.deepEqual(extractJson('"foo"'), ['foo']);
 });
 
+test('extracts JSON strings (contains newline)', (t) => {
+  t.deepEqual(extractJson('"foo\nbar"'), ['foo\nbar']);
+});
+
 test('ignores non-JSON text', (t) => {
   t.deepEqual(extractJson('foo {"foo":"bar"} bar {"baz":"qux"} baz  '), [
     {foo: 'bar'},
