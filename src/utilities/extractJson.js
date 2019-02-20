@@ -60,7 +60,12 @@ export default (subject: string, configuration?: ExtractJsonConfigurationType): 
       // $FlowFixMe
       if (openCharacter === '"') {
         try {
-          const result = parser(haystack.replace(/\n/g, '\\n'));
+          const result = parser(
+            haystack
+              .replace(/\n/g, '\\n')
+              .replace(/\\"/g, '\\"')
+              .replace(/\\'/g, '\'')
+          );
 
           foundObjects.push(result);
 
