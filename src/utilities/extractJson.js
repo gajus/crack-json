@@ -57,28 +57,6 @@ export default (subject: string, configuration?: ExtractJsonConfigurationType): 
         //
       }
 
-      // $FlowFixMe
-      if (openCharacter === '"') {
-        try {
-          const result = parser(
-            haystack
-              .replace(/\n/g, '\\n')
-              .replace(/\\"/g, '\\"')
-              .replace(/\\'/g, '\'')
-          );
-
-          foundObjects.push(result);
-
-          subjectOffset += startIndex + haystack.length;
-
-          rule.lastIndex = 0;
-
-          break;
-        } catch (error) {
-          //
-        }
-      }
-
       const offsetIndex = haystack.slice(0, -1).lastIndexOf(closeCharacter) + 1;
 
       haystack = haystack.slice(0, offsetIndex);

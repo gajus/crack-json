@@ -16,18 +16,6 @@ test('extracts JSON strings', (t) => {
   t.deepEqual(extractJson('"foo"'), ['foo']);
 });
 
-test('extracts JSON strings (contains newline)', (t) => {
-  t.deepEqual(extractJson('"foo\nbar"'), ['foo\nbar']);
-});
-
-test('extracts JSON strings (contains escaped single quote)', (t) => {
-  t.deepEqual(extractJson('"foo\\\'bar"'), ['foo\'bar']);
-});
-
-test('extracts JSON strings (contains escaped double quote)', (t) => {
-  t.deepEqual(extractJson('"foo\\\"bar"'), ['foo\"bar']);
-});
-
 test('ignores non-JSON text', (t) => {
   t.deepEqual(extractJson('foo {"foo":"bar"} bar {"baz":"qux"} baz  '), [
     {foo: 'bar'},
