@@ -1,5 +1,5 @@
 // @flow
 
 export {
-  extractJson
+  extractJson,
 } from './utilities';

@@ -2,13 +2,13 @@
 
 type ExtractJsonConfigurationType = {|
   // eslint-disable-next-line flowtype/no-weak-types
-  +parser?: (input: string) => any
+  +parser?: (input: string) => any,
 |};
 
 const closeCharacterMap = {
   '"': '"',
   '[': ']',
-  '{': '}'
+  '{': '}',
 };
 
 const defaultParser = JSON.parse.bind(JSON);

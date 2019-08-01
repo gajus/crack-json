@@ -19,7 +19,7 @@ test('extracts JSON strings', (t) => {
 test('ignores non-JSON text', (t) => {
   t.deepEqual(extractJson('foo {"foo":"bar"} bar {"baz":"qux"} baz  '), [
     {foo: 'bar'},
-    {baz: 'qux'}
+    {baz: 'qux'},
   ]);
 });
 
@@ -30,15 +30,15 @@ test('ignores unclosed JSON objects', (t) => {
 test('extracts multiple JSON objects', (t) => {
   t.deepEqual(extractJson('{"foo":"bar"}{"baz":"qux"}'), [
     {foo: 'bar'},
-    {baz: 'qux'}
+    {baz: 'qux'},
   ]);
 });
 
 test('uses custom parser', (t) => {
   t.deepEqual(extractJson('foo {"foo":"bar"} bar {baz:"qux"} baz  ', {
-    parser: JSON5.parse.bind(JSON5)
+    parser: JSON5.parse.bind(JSON5),
   }), [
     {foo: 'bar'},
-    {baz: 'qux'}
+    {baz: 'qux'},
   ]);
 });

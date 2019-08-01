@@ -17,7 +17,7 @@
         "targets": {
           "node": "8.0"
         },
-        "useBuiltIns": "usage"
+        "useBuiltIns": false
       }
     ]
   ]
