@@ -13,6 +13,7 @@ Extracts all JSON objects from an arbitrary text document.
 * [API](#api)
   * [`extractJson` API](#extractjson-api)
 * [Usage](#usage)
+  * [Filtering out matches](#filtering-out-matches)
 
 ## Use case
 
@@ -63,10 +64,12 @@ import {
 
 ```js
 /**
+ * @property filter Used to filter out strings before attempting to decode them.
  * @property parser A parser used to extract JSON from the suspected strings. Default: `JSON.parse`.
  */
 type ExtractJsonConfigurationType = {|
-  +parser?: (input: string) => any
+  +filter?: (input: string) => boolean,
+  +parser?: (input: string) => any,
 |};
 
 type ExtractJsonType = (subject: string, configuration?: ExtractJsonConfigurationType) => any;
@@ -116,6 +119,48 @@ Output:
     }
   ],
   'quux'
+]
+
+```
+
+### Filtering out matches
+
+You can use `filter` to exclude strings before they are parsed using an arbitrary condition. This will improve performance and reduce output only to the desirable objects, e.g.
+
+```html
+import {
+  extractJson
+} from 'crack-json';
+
+const payload = `
+  <script>
+  const foo = {
+    cinemaId: '1',
+  };
+  const bar = {
+    venueId: '1',
+  };
+  const baz = {
+    userId: '1',
+  };
+  </script>
+`;
+
+console.log(extractJson(payload, {
+  filter: (input) => {
+    return input.includes('userId')
+  },
+}));
+
+```
+
+Output:
+
+```js
+[
+  {
+    userId: '1',
+  },
 ]
 
 ```

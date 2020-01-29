@@ -42,3 +42,13 @@ test('uses custom parser', (t) => {
     {baz: 'qux'},
   ]);
 });
+
+test('filters out non-matching strings', (t) => {
+  t.deepEqual(extractJson('foo {"foo":"bar"} bar {"baz":"qux"} baz  ', {
+    filter: (input) => {
+      return input.includes('baz');
+    },
+  }), [
+    {baz: 'qux'},
+  ]);
+});

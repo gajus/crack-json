@@ -1,6 +1,8 @@
 // @flow
 
 type ExtractJsonConfigurationType = {|
+  +filter?: (input: string) => boolean,
+
   // eslint-disable-next-line flowtype/no-weak-types
   +parser?: (input: string) => any,
 |};
@@ -19,6 +21,7 @@ const defaultParser = JSON.parse.bind(JSON);
 // eslint-disable-next-line flowtype/no-weak-types
 export default (subject: string, configuration?: ExtractJsonConfigurationType): $ReadOnlyArray<any> => {
   const parser = configuration && configuration.parser ? configuration.parser : defaultParser;
+  const filter = configuration && configuration.filter;
 
   const foundObjects = [];
 
@@ -29,32 +32,34 @@ export default (subject: string, configuration?: ExtractJsonConfigurationType): 
   while (true) {
     const offsetSubject = subject.slice(subjectOffset);
 
-    const match = rule.exec(offsetSubject);
+    const openCharacterMatch = rule.exec(offsetSubject);
 
-    if (!match) {
+    if (!openCharacterMatch) {
       break;
     }
 
-    const openCharacter = match[0];
+    const openCharacter = openCharacterMatch[0];
     const closeCharacter = closeCharacterMap[openCharacter];
 
-    const startIndex = match.index;
+    const startIndex = openCharacterMatch.index;
 
     let haystack = offsetSubject.slice(startIndex);
 
     while (haystack.length) {
-      try {
-        const result = parser(haystack);
+      if (!filter || filter(haystack)) {
+        try {
+          const result = parser(haystack);
 
-        foundObjects.push(result);
+          foundObjects.push(result);
 
-        subjectOffset += startIndex + haystack.length;
+          subjectOffset += startIndex + haystack.length;
 
-        rule.lastIndex = 0;
+          rule.lastIndex = 0;
 
-        break;
-      } catch (error) {
-        //
+          break;
+        } catch (error) {
+          //
+        }
       }
 
       const offsetIndex = haystack.slice(0, -1).lastIndexOf(closeCharacter) + 1;
